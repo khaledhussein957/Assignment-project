@@ -14,6 +14,17 @@ app.use(express.urlencoded({ extended: true }));
 // routes
 app.use("/api/products", productRoute);
 
+// test route
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to the API!" });
+});
+
+// error handling
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: "Something went wrong!" });
+});
+
 const startServer = async () => {
   try {
     await connectDB();

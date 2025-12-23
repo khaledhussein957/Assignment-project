@@ -1,13 +1,13 @@
-import { connectedDB } from "../config/db.js";
+import { connectedDB, pool } from "../config/db.js";
 import cloudinary from "../config/cloudinary.js";
 
 export const getProducts = async (req, res) => {
   try {
-    const result = await connectedDB.query("SELECT * FROM products");
+    const result = await pool.query("SELECT * FROM public.products");
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "No products found" });
     }
-    res.json(result.rows); // Return all products as JSON
+    res.json(result.rows);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to fetch products" });
@@ -17,14 +17,13 @@ export const getProducts = async (req, res) => {
 export const getProductById = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await connectedDB.query(
-      "SELECT * FROM products WHERE id = $1",
-      [id]
-    );
+    const result = await pool.query("SELECT * FROM products WHERE id = $1", [
+      id,
+    ]);
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "Product not found" });
     }
-    res.json(result.rows[0]); // Return the specific product as JSON
+    res.json(result.rows[0]);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to fetch product" });
@@ -71,7 +70,7 @@ export const createProduct = async (req, res) => {
       productData.quantity,
     ];
 
-    const result = await connectedDB.query(query, values);
+    const result = await pool.query(query, values);
     res.status(201).json(result.rows[0]);
   } catch (error) {
     console.log(error);
@@ -114,7 +113,7 @@ export const updateProduct = async (req, res) => {
       id,
     ];
 
-    const result = await connectedDB.query(query, values);
+    const result = await pool.query(query, values);
     res.json(result.rows[0]);
   } catch (error) {
     console.log(error);
@@ -125,7 +124,7 @@ export const updateProduct = async (req, res) => {
 export const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await connectedDB.query(
+    const result = await pool.query(
       "DELETE FROM products WHERE id = $1 RETURNING *",
       [id]
     );
