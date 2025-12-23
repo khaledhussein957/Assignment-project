@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import path from "path";
 
 import connectDB from "./config/db.js";
 import ENV from "./config/ENV.js";
@@ -21,15 +20,6 @@ app.use("/api/products", productRoute);
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to the API!" });
 });
-
-// make our app ready for deployment
-if (ENV.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../dashboard/dist")));
-
-  app.get("/{*any}", (req, res) => {
-    res.sendFile(path.join(__dirname, "../dashboard", "dist", "index.html"));
-  });
-}
 
 // error handling
 app.use((err, req, res, next) => {
