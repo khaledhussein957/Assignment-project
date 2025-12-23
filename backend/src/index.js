@@ -3,7 +3,16 @@ import express from "express";
 import connectDB from "./config/db.js";
 import ENV from "./config/ENV.js";
 
+import productRoute from "./routes/product.route.js";
+
 const app = express();
+
+// middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// routes
+app.use("/api/products", productRoute);
 
 const startServer = async () => {
   try {
