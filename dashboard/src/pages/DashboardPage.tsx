@@ -1,0 +1,186 @@
+import {
+  DollarSignIcon,
+  PackageIcon,
+  ShoppingBagIcon,
+  UsersIcon,
+} from "lucide-react";
+import { capitalizeText, formatDate, getOrderStatusBadge } from "../lib/utils";
+import { useProducts } from "../hooks/useProduct";
+import StockChart from "../components/StockChart";
+
+function DashboardPage() {
+  const { data: products = [], isLoading } = useProducts();
+
+  const totalRevenue = products.reduce(
+    (acc, product) => acc + product.price,
+    0
+  );
+  const totalProducts = products.length;
+
+  const statsCards = [
+    {
+      name: "Total Revenue",
+      value: `$${totalRevenue.toFixed(2)}`,
+      icon: <DollarSignIcon className="size-8" />,
+    },
+    {
+      name: "Total Orders",
+      value: "312",
+      icon: <ShoppingBagIcon className="size-8" />,
+    },
+    {
+      name: "Total Customers",
+      value: "189",
+      icon: <UsersIcon className="size-8" />,
+    },
+    {
+      name: "Total Products",
+      value: `${totalProducts}`,
+      icon: <PackageIcon className="size-8" />,
+    },
+  ];
+
+  const ordersLoading = false;
+
+  const recentOrders = [
+    {
+      _id: "64f1c9a2e8b91a001234abcd",
+      shippingAddress: {
+        fullName: "Alex Johnson",
+      },
+      orderItems: [{ name: "Wireless Headphones" }, { name: "USB-C Charger" }],
+      totalPrice: 129.99,
+      status: "delivered",
+      createdAt: "2025-01-10T14:32:00.000Z",
+    },
+    {
+      _id: "64f1c9a2e8b91a009876efgh",
+      shippingAddress: {
+        fullName: "Maria Lopez",
+      },
+      orderItems: [{ name: "Gaming Mouse" }],
+      totalPrice: 59.99,
+      status: "processing",
+      createdAt: "2025-01-12T09:18:00.000Z",
+    },
+    {
+      _id: "64f1c9a2e8b91a004321ijkl",
+      shippingAddress: {
+        fullName: "Daniel Smith",
+      },
+      orderItems: [
+        { name: "Mechanical Keyboard" },
+        { name: "Mouse Pad" },
+        { name: "Desk Lamp" },
+      ],
+      totalPrice: 214.5,
+      status: "pending",
+      createdAt: "2025-01-14T18:45:00.000Z",
+    },
+  ];
+
+  return (
+    <div className="space-y-6">
+      {/* STATS */}
+      <div className="stats stats-vertical lg:stats-horizontal shadow w-full bg-base-100">
+        {statsCards.map((stat) => (
+          <div key={stat.name} className="stat">
+            <div className="stat-figure text-primary">{stat.icon}</div>
+            <div className="stat-title">{stat.name}</div>
+            <div className="stat-value">{stat.value}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* CHARTS */}
+      {!isLoading && products.length > 0 && <StockChart products={products} />}
+
+      {/* RECENT ORDERS */}
+      <div className="card bg-base-100 shadow-xl">
+        <div className="card-body">
+          <h2 className="card-title">Recent Orders</h2>
+
+          {ordersLoading ? (
+            <div className="flex justify-center py-8">
+              <span className="loading loading-spinner loading-lg" />
+            </div>
+          ) : recentOrders.length === 0 ? (
+            <div className="text-center py-8 text-base-content/60">
+              No orders yet
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Items</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {recentOrders.map((order) => (
+                    <tr key={order._id}>
+                      <td>
+                        <span className="font-medium">
+                          #{order._id.slice(-8).toUpperCase()}
+                        </span>
+                      </td>
+
+                      <td>
+                        <div>
+                          <div className="font-medium">
+                            {order.shippingAddress.fullName}
+                          </div>
+                          <div className="text-sm opacity-60">
+                            {order.orderItems.length} item(s)
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>
+                        <div className="text-sm">
+                          {order.orderItems[0]?.name}
+                          {order.orderItems.length > 1 &&
+                            ` +${order.orderItems.length - 1} more`}
+                        </div>
+                      </td>
+
+                      <td>
+                        <span className="font-semibold">
+                          ${order.totalPrice.toFixed(2)}
+                        </span>
+                      </td>
+
+                      <td>
+                        <div
+                          className={`badge ${getOrderStatusBadge(
+                            order.status
+                          )}`}
+                        >
+                          {capitalizeText(order.status)}
+                        </div>
+                      </td>
+
+                      <td>
+                        <span className="text-sm opacity-60">
+                          {formatDate(order.createdAt)}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default DashboardPage;
