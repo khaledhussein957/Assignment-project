@@ -1,0 +1,22 @@
+{
+  "name": "assignment-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install --prefix backend && npm install --prefix dashboard && npm run build --prefix dashboard",
+    "start": "npm run start --prefix backend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khaledhussein957/Assignment-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/khaledhussein957/Assignment-project/issues"
+  },
+  "homepage": "https://github.com/khaledhussein957/Assignment-project#readme"
+}

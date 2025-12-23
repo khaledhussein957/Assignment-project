@@ -15,7 +15,6 @@ export const useCreateProduct = () => {
   return useMutation<Product, Error, FormData>({
     mutationFn: productApi.create,
     onSuccess: () => {
-      // Invalidate and refetch the list of products after a successful create
       queryClient.invalidateQueries({ queryKey: ["products"] });
     },
   });
@@ -27,7 +26,6 @@ export const useUpdateProduct = () => {
   return useMutation<Product, Error, { id: string; formData: FormData }>({
     mutationFn: ({ id, formData }) => productApi.update(id, formData),
     onSuccess: () => {
-      // Invalidate and refetch the list of products after a successful update
       queryClient.invalidateQueries({ queryKey: ["products"] });
     },
   });
@@ -39,7 +37,6 @@ export const useDeleteProduct = () => {
   return useMutation<void, Error, string>({
     mutationFn: productApi.delete,
     onSuccess: () => {
-      // Invalidate and refetch the list of products after a successful delete
       queryClient.invalidateQueries({ queryKey: ["products"] });
     },
   });

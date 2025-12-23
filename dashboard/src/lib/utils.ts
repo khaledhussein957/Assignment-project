@@ -3,3 +3,33 @@ export const getStockStatusBadge = (stock: number) => {
   if (stock < 5) return { text: "Low Stock", class: "badge-warning" };
   return { text: "In Stock", class: "badge-success" };
 };
+
+export const capitalizeText = (text: string) => {
+  if (!text) return text;
+  return text.charAt(0).toUpperCase() + text.slice(1);
+};
+
+export const getOrderStatusBadge = (status: string) => {
+  switch (status?.toLowerCase()) {
+    case "delivered":
+      return "badge-success";
+    case "shipped":
+      return "badge-info";
+    case "pending":
+      return "badge-warning";
+    default:
+      return "badge-ghost";
+  }
+};
+
+export const formatDate = (dateString: string) => {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return "";
+
+  return new Date(dateString).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+};
