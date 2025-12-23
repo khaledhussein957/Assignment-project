@@ -19,6 +19,7 @@ const ENV = {
   PGPASSWORD: process.env.PGPASSWORD,
   PGSSLMODE: process.env.PGSSLMODE,
   PGCHANNELBINDING: process.env.PGCHANNELBINDING,
+  CLIENT_URL: process.env.CLIENT_URL,
 };
 
 export default ENV;
