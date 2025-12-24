@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router";
-import LoginPage from "./pages/LoginPage";
+// import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage.tsx";
 import ProductsPage from "./pages/ProductsPage.tsx";
 import OrdersPage from "./pages/OrdersPage.tsx";
