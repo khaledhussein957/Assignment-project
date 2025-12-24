@@ -25,6 +25,10 @@ app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
 // better-auth handler
 app.all("/api/auth/*path", toNodeHandler(auth));
 
+app.get("/post-login", (req, res) => {
+  res.redirect("https://assignment-project-orpin.vercel.app/dashboard");
+});
+
 // routes
 app.use("/api/products", productRoute);
 
