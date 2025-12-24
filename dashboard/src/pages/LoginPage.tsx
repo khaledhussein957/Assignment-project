@@ -3,10 +3,15 @@ import { authClient } from "../lib/auth-client";
 
 function LoginPage() {
   const handleGoogleLogin = async () => {
-    await authClient.signIn.social({
-      provider: "google",
-      callbackURL: "/dashboard",
-    });
+    try {
+      await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/dashboard",
+      });
+    } catch (error) {
+      console.error("Login failed:", error);
+      console.log("Failed to sign in. Please try again.");
+    }
   };
 
   return (
