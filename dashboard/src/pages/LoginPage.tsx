@@ -6,7 +6,7 @@ function LoginPage() {
     try {
       await authClient.signIn.social({
         provider: "google",
-        callbackURL: `${window.location.origin}/dashboard`,
+        callbackURL: "/",
       });
     } catch (error) {
       console.error("Login failed:", error);
