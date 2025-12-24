@@ -5,13 +5,18 @@ import connectDB from "./config/db.js";
 import ENV from "./config/ENV.js";
 
 import productRoute from "./routes/product.route.js";
+import { auth } from "./lib/auth.js";
+import { toNodeHandler } from "better-auth/node";
 
 const app = express();
 
 // middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: ENV.CLIENT_URL, credentials: true })); // credentials: true allows the browser to send the cookies to the server with the request
+app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
+
+// auth handler
+app.all("/api/auth/*path", toNodeHandler(auth));
 
 // routes
 app.use("/api/products", productRoute);
