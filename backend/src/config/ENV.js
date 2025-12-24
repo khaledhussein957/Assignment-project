@@ -20,6 +20,15 @@ const ENV = {
   PGSSLMODE: process.env.PGSSLMODE,
   PGCHANNELBINDING: process.env.PGCHANNELBINDING,
   CLIENT_URL: process.env.CLIENT_URL,
+
+  BETTER_AUTH_SECRET:
+    process.env.BETTER_AUTH_SECRET ||
+    "a-very-secret-key-at-least-thirty-two-chars",
+  BETTER_AUTH_URL:
+    process.env.BETTER_AUTH_URL ||
+    `http://localhost:${process.env.PORT || 8080}/api/auth`,
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
 };
 
 export default ENV;
