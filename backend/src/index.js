@@ -17,8 +17,9 @@ jobs.start();
 // middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
+
 app.use(cookieParser());
+app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
 
 // better-auth handler
 app.all("/api/auth/*path", toNodeHandler(auth));

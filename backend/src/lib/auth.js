@@ -14,6 +14,7 @@ export const auth = betterAuth({
   cookies: {
     secure: true,
     sameSite: "none",
+    path: "/",
   },
   emailAndPassword: {
     enabled: true,
