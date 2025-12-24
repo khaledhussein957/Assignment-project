@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import path from "path";
 
 import connectDB from "./config/db.js";
 import ENV from "./config/ENV.js";
@@ -32,11 +33,14 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to the API!" });
 });
 
-// error handling
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: "Something went wrong!" });
-});
+// make our app ready for deployment
+if (ENV.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../dashboard/dist")));
+
+  app.get("/{*any}", (req, res) => {
+    res.sendFile(path.join(__dirname, "../dashboard", "dist", "index.html"));
+  });
+}
 
 const startServer = async () => {
   try {
