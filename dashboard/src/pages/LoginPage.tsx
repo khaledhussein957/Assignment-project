@@ -6,7 +6,7 @@ function LoginPage() {
     try {
       await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/",
+        callbackURL: "https://assignment-project-orpin.vercel.app/dashboard",
       });
     } catch (error) {
       console.error("Login failed:", error);
