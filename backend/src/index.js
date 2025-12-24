@@ -1,8 +1,10 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 import connectDB from "./config/db.js";
 import ENV from "./config/ENV.js";
+import jobs from "./config/cron.js";
 
 import productRoute from "./routes/product.route.js";
 import { auth } from "./lib/auth.js";
@@ -10,12 +12,15 @@ import { toNodeHandler } from "better-auth/node";
 
 const app = express();
 
+jobs.start();
+
 // middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
+app.use(cookieParser());
 
-// auth handler
+// better-auth handler
 app.all("/api/auth/*path", toNodeHandler(auth));
 
 // routes

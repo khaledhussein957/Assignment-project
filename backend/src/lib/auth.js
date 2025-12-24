@@ -11,6 +11,10 @@ export const auth = betterAuth({
       prompt: "select_account consent",
     },
   },
+  cookies: {
+    secure: true,
+    sameSite: "none",
+  },
   emailAndPassword: {
     enabled: true,
   },
